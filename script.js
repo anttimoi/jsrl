@@ -267,6 +267,16 @@ function saveGame(gameState) {
   window.parent.postMessage(msg, "*");
 }
 
+function drawIntro() {
+  var introString = "<div contenteditable><center>"
+  introString += "<h1>JSRL</h1>";
+  introString += "<h3>JavaScript Roguelike</h3>";
+  introString += "<p>Collect keys and reach further into the dungeon. Find the exit and win the game.</p>";
+  introString += "<p>Use arrow keys to move.</p>";
+  introString += "<p><b>Press any key to begin.</b></p>";
+  $("#game").html(introString+"</center></div>");
+}
+
 $( document ).ready( function() {
     $("html, body").css({
         overflow: "hidden",
@@ -307,7 +317,8 @@ $( document ).ready( function() {
         player: player,
         npcs: npcs,
         map: map,
-        fog: fog
+        fog: fog,
+        intro: true
     };
 
     var gameConfig = {
@@ -315,8 +326,12 @@ $( document ).ready( function() {
         debug: true
     };
 
-    updateFog(gameState);
-    drawMap(gameState, gameConfig);
+    if (gameState.intro) {
+      drawIntro();
+    } else {
+      updateFog(gameState);
+      drawMap(gameState, gameConfig);
+    }
 
     // Load-event listener
     window.addEventListener("message", function(evt) {
@@ -329,7 +344,7 @@ $( document ).ready( function() {
 
     // Start listening to keyup events and act accordingly.
     $( document ).keyup(function(e) {
-        if (e.keyCode >= 37 && e.keyCode <= 40 && !win) {
+        if (e.keyCode >= 37 && e.keyCode <= 40 && !win && !gameState.intro) {
             moveCharacter(map,player,40-e.keyCode);
             updateNpcs(gameState);
             if (win) {
@@ -356,6 +371,7 @@ $( document ).ready( function() {
 
         updateFog(gameState);
         drawMap(gameState, gameConfig);
-        console.log(gameState);
+
+        gameState.intro = false;  // Remove intro-flag after first key press
     });
 });
