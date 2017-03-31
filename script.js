@@ -273,12 +273,13 @@ function saveGame(gameState) {
 }
 
 function drawIntro() {
-  var introString = "<div contenteditable><center>"
+  var introString = "<div><center>"
   introString += "<h1>JSRL</h1>";
   introString += "<h3>JavaScript Roguelike</h3>";
   introString += "<p>Collect keys and reach further into the dungeon. Find the exit and win the game.</p>";
   introString += "<p>Use arrow keys to move.</p>";
   introString += "<p><b>Press any key to begin.</b></p>";
+  introString += "<p><a href='https://github.com/anttimoi/jsrl'>View on GitHub</a></p>";
   $("#game").html(introString+"</center></div>");
 }
 
