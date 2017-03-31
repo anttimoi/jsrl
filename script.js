@@ -244,7 +244,12 @@ function updateNpcs(gameState) {
 
 function placeCharacter(character, map) {
   do {
-      character.y = Math.floor(Math.random()*(s/cF));
+      // Player starts at the top of the map
+      if (character.player) {
+        character.y = Math.floor(Math.random()*(s/cF));
+      } else {
+        character.y = Math.floor(Math.random()*(s));
+      }
       character.x = Math.floor(Math.random()*s);
   } while(map[character.y][character.x] != g)
 
@@ -282,6 +287,15 @@ $( document ).ready( function() {
         overflow: "hidden",
         height: "100%"
     });
+
+    var message =  {
+      messageType: "SETTING",
+      options: {
+        "width": 500, //Integer
+        "height": 900 //Integer
+        }
+    };
+    window.parent.postMessage(message, "*");
 
     var map = makeMap();
 
